@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { Article } from './article.model';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -22,5 +22,10 @@ export class ArticlesController {
   createArticle(@Body() createArticleDto: CreateArticleDto): Article {
     return this.articlesService.createArticle(createArticleDto);
 
+  }
+
+  @Delete('/:id')
+  deleteArticle(@Param('id') id: string): void {
+    return this.articlesService.deleteArticle(id);
   }
 }
