@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Article } from './article.model';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -17,7 +17,12 @@ export class ArticlesService {
   }
 
   getArticleById(id: string): Article {
-    return this.articles.find(article => article.id === id);
+    const found = this.articles.find(article => article.id === id);
+
+    if (!found) {
+      throw new NotFoundException(`Article with ID "${id}" not found`)
+    }
+    return found
   }
 
   createArticle(createArticleDto: CreateArticleDto): Article {
@@ -38,6 +43,10 @@ export class ArticlesService {
   }
 
   deleteArticle(id: string): void {
-    this.articles = this.articles.filter(article => article.id !== id);
+    const article = this.getArticleById(id);
+
+    if(article) {
+      this.articles = this.articles.filter(article => article.id !== id);
+    }
   }
 }
