@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { Article } from './article.model';
 import { CreateArticleDto } from './dto/create-article.dto';
 
 @Controller('articles')

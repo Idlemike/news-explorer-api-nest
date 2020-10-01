@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Article } from './article.model';
-import { v4 as uuidv4 } from 'uuid';
+
 import { CreateArticleDto } from './dto/create-article.dto';
 
 const date = require('date-and-time');
