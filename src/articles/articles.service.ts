@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateArticleDto } from './dto/create-article.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArticleRepository } from './article.repository';
+import { Article } from './article.entity';
 
 const date = require('date-and-time');
 
@@ -9,20 +12,26 @@ const nowTime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
 
 @Injectable()
 export class ArticlesService {
+  constructor(
+    @InjectRepository(ArticleRepository)
+    private articleRepository: ArticleRepository,
+  ) {
+
+  }
+
   // private articles: Article[] = [];
 
   // getAllArticles() {
   //   return this.articles;
   // }
   //
-  // getArticleById(id: string): Article {
-  //   const found = this.articles.find(article => article.id === id);
-  //
-  //   if (!found) {
-  //     throw new NotFoundException(`Article with ID "${id}" not found`)
-  //   }
-  //   return found
-  // }
+  async getArticleById(id: number): Promise<Article> {
+    const found = await this.articleRepository.findOne(id);
+    if (!found) {
+      throw new NotFoundException(`Article with ID "${id}" not found`);
+    }
+    return found;
+  }
   //
   // createArticle(createArticleDto: CreateArticleDto): Article {
   //   const { title, keyword, text, source, link, image, owner } = createArticleDto;

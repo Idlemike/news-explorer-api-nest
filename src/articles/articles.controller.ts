@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { Article } from './article.entity';
 
 @Controller('articles')
 export class ArticlesController {
@@ -12,10 +13,10 @@ export class ArticlesController {
   //   return this.articlesService.getAllArticles();
   // }
   //
-  // @Get('/:id')
-  // getArticleById(@Param('id') id: string): Article {
-  //   return this.articlesService.getArticleById(id)
-  // }
+  @Get('/:id')
+  getArticleById(@Param('id', ParseIntPipe) id: number): Promise<Article> {
+    return this.articlesService.getArticleById(id)
+  }
   //
   // @Post()
   // @UsePipes(ValidationPipe)
