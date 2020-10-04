@@ -14,9 +14,8 @@ export class CreateArticleDto {
   @MinLength(2)
   @MaxLength(30)
   text: string;
-  @MinLength(2)
-  @MaxLength(30)
   @IsNotEmpty()
+  @IsUrl()
   source: string;
   @MinLength(2)
   @MaxLength(30)

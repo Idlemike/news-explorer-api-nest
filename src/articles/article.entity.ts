@@ -17,8 +17,8 @@ export class Article extends BaseEntity {
   @Column()
   source: string;
 
-  @Column("timestamp")
-  date: string;
+  // @Column("timestamp")
+  // date: string;
 
   @Column()
   owner: string;

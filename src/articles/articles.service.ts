@@ -4,6 +4,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleRepository } from './article.repository';
 import { Article } from './article.entity';
+import { GetArticlesFilterDto } from './dto/get-articles-filter.dto';
 
 const date = require('date-and-time');
 
@@ -15,16 +16,12 @@ export class ArticlesService {
   constructor(
     @InjectRepository(ArticleRepository)
     private articleRepository: ArticleRepository,
-  ) {
+  ) {}
 
+  async getArticles(filterDto: GetArticlesFilterDto): Promise<Article[]> {
+    return this.articleRepository.getArticles(filterDto);
   }
 
-  // private articles: Article[] = [];
-
-  // getAllArticles() {
-  //   return this.articles;
-  // }
-  //
   async getArticleById(id: number): Promise<Article> {
     const found = await this.articleRepository.findOne(id);
     if (!found) {
@@ -32,29 +29,15 @@ export class ArticlesService {
     }
     return found;
   }
-  //
-  // createArticle(createArticleDto: CreateArticleDto): Article {
-  //   const { title, keyword, text, source, link, image, owner } = createArticleDto;
-  //   const article: Article = {
-  //     id: uuidv4(),
-  //     date: nowTime,
-  //     title,
-  //     keyword,
-  //     text,
-  //     source,
-  //     link,
-  //     image,
-  //     owner,
-  //   };
-  //   this.articles.push(article);
-  //   return article;
-  // }
-  //
-  // deleteArticle(id: string): void {
-  //   const article = this.getArticleById(id);
-  //
-  //   if(article) {
-  //     this.articles = this.articles.filter(article => article.id !== id);
-  //   }
-  // }
+
+  async createArticle(createArticleDto: CreateArticleDto): Promise<Article> {
+    return this.articleRepository.createArticle(createArticleDto);
+  }
+
+  async deleteArticle(id: number): Promise<void> {
+    const result = await this.articleRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Article with ID "${id}" not found`);
+    }
+  }
 }
